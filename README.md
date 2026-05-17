@@ -92,25 +92,27 @@ z-hermes/
 
 编辑 `config.json` 文件：
 
-```json
-{
-    "model": {
-        "api_key": "sk-no-key-required",
-        "base_url": "http://localhost:1234/v1",
-        "model": "qwen2.5-7b-instruct",
-        "max_tokens": 400
-    },
-    "agent": {
-        "max_iterations": 15
-    },
-    "learning": {
-        "memory_nudge_interval": 5,
-        "skill_nudge_interval": 8
-    },
-    "aux_model": {
-        "max_tokens": 300
-    }
-}
+```yaml
+# Z-Hermes 配置文件
+# 修改后重启程序生效
+
+model:
+  api_key: "lm-studio"
+  base_url: "http://localhost:1234/v1"
+  model: "qwen3.5-35b-a3b"
+  max_tokens: 400
+
+agent:
+  max_iterations: 15
+
+learning:
+  memory_nudge_interval: 5
+  skill_nudge_interval: 8
+
+aux_model:
+  max_tokens: 300
+
+
 ```
 
 | 配置项 | 说明 | 默认值 |
@@ -128,7 +130,7 @@ z-hermes/
 
 ### 前置依赖
 - Zig 0.16
-- SQLite3 开发库（项目已内置在 vendor/ 目录）
+- SQLite3
 
 ### 构建
 
