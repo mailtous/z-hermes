@@ -1,0 +1,17 @@
+.{
+    .name = .z_hermes,
+    .version = "0.1.0",
+    .fingerprint = 0x68e531657404003c,
+    .minimum_zig_version = "0.16.0",
+    .dependencies = .{
+        .sqlite = .{
+            .url = "https://github.com/nDimensional/zig-sqlite/archive/refs/tags/v0.4.0-3530000.tar.gz",
+            .hash = "sqlite-0.4.0-3530000-djiKTqGBAABUErJqFiVjgFemleQ71XXCDXWinnXcASWx",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}

@@ -1,0 +1,24 @@
+__pycache__/
+*.pyc
+.venv/
+data/
+.claude/
+.idea/
+config.yaml
+.idea/**
+graphify-out/
+.idea
+#####  zig ############
+.zig-cache
+zig
+zig-out
+zid-pkg
+##### zip ... file #############
+.zip
+.rar
+.deb
+
+
+
+
+
