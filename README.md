@@ -1,6 +1,6 @@
 # Z-Hermes
 
-基于 Zig 0.16 的 AI Agent 项目，从mini-hermes项目(python)迁移而来。
+基于 Zig 0.16 的 AI Agent 项目，参与hermes项目而来。
 具备持久化记忆、自我改进技能、工具调用和上下文压缩等功能。
 
 ## 项目结构
@@ -128,9 +128,58 @@ aux_model:
 
 ## 构建与运行
 
+### 安装 Zig 环境
+
+本项目使用 [Zig](https://ziglang.org/) 编程语言。在构建之前，请确保已安装 Zig 0.16 或更高版本。
+
+#### 安装步骤
+
+1. **访问 Zig 官网下载页面**：[https://ziglang.org/download/](https://ziglang.org/download/)
+
+2. **下载适合你操作系统的预编译二进制文件**：
+   - **Linux**: `zig-linux-x86_64-0.16.0.tar.xz`
+   - **macOS**: `zig-macos-x86_64-0.16.0.tar.xz` 或 `zig-macos-aarch64-0.16.0.tar.xz` (Apple Silicon)
+   - **Windows**: `zig-windows-x86_64-0.16.0.zip`
+
+3. **解压并添加到 PATH**：
+
+   **Linux/macOS**:
+   ```bash
+   tar xf zig-linux-x86_64-0.16.0.tar.xz
+   sudo mv zig-linux-x86_64-0.16.0 /opt/zig
+   export PATH="/opt/zig:$PATH"
+   # 建议将 export 命令添加到 ~/.bashrc 或 ~/.zshrc
+   ```
+
+   **Windows**:
+   - 解压 ZIP 文件到 `C:\zig`
+   - 将 `C:\zig` 添加到系统环境变量 PATH 中
+
+4. **验证安装**：
+   ```bash
+   zig version
+   # 应输出类似：0.16.0
+   ```
+
+#### 其他安装方式
+
+- **使用包管理器**（推荐用于 Linux 发行版）：
+  ```bash
+  # Arch Linux
+  sudo pacman -S zig
+
+  # Fedora
+  sudo dnf install zig
+
+  # macOS (使用 Homebrew)
+  brew install zig
+  ```
+
+- **从源码编译**：参见 [Zig 官方仓库](https://github.com/ziglang/zig)
+
 ### 前置依赖
-- Zig 0.16
-- SQLite3
+- Zig 0.16+
+- SQLite3（开发库）
 
 ### 构建
 
