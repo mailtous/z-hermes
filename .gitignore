@@ -12,11 +12,13 @@ graphify-out/
 .zig-cache
 zig
 zig-out
-zid-pkg
+zig-pkg
+zig-pkg/**
 ##### zip ... file #############
 .zip
 .rar
 .deb
+**/sqlite-*
 
 
 

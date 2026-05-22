@@ -4,10 +4,10 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
+    // Get vrischmann/zig-sqlite dependency
     const sqlite_dep = b.dependency("sqlite", .{
         .target = target,
         .optimize = optimize,
-        .SQLITE_ENABLE_FTS5 = true,
     });
 
     const root_module = b.addModule("root", .{
@@ -16,6 +16,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
+    // Use the sqlite module from vrischmann/zig-sqlite directly
     root_module.addImport("sqlite", sqlite_dep.module("sqlite"));
 
     const exe = b.addExecutable(.{
