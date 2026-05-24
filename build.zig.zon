@@ -5,8 +5,8 @@
     .minimum_zig_version = "0.16.0",
     .dependencies = .{
         .sqlite = .{
-            .url = "https://github.com/vrischmann/zig-sqlite/archive/fb73a6cca771c0c26fbab1a1f7689c23ec786257.tar.gz",
-            .hash = "sqlite-3.48.0-F2R_a8WODgDamFQx1fOrpgY7IdluD4Sr_P7G0UPxUUMr",
+            .url = "https://github.com/nDimensional/zig-sqlite/archive/refs/tags/v0.4.0-3530000.tar.gz",
+            .hash = "sqlite-0.4.0-3530000-djiKTqGBAABUErJqFiVjgFemleQ71XXCDXWinnXcASWx",
         },
     },
     .paths = .{

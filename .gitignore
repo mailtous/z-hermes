@@ -1,7 +1,8 @@
 __pycache__/
+config.yaml
+data/
 *.pyc
 .venv/
-data/
 .claude/
 .idea/
 config.yaml

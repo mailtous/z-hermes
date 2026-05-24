@@ -83,6 +83,11 @@ z-hermes/
 - 支持创建、查看、局部修改(patch)、完全重写(edit)和删除
 - 技能内容自动注入系统提示词
 
+#### 安装SKILLS
+
+你只需要把技能目录复制到 `data/skills/` 目录下即可。
+复制完成后，重启程序即可自动加载该技能。
+
 ### 8. 上下文压缩 (Compression)
 - 当对话历史过长时自动触发压缩
 - 保留头部关键消息 + LLM生成的中间摘要 + 尾部近期消息
@@ -226,3 +231,21 @@ zig build run
               ├── 如有工具调用 → 执行工具 → 添加结果到历史 → 继续循环
               └── 返回最终文本回复
 ```
+# zig build 下载不了依赖时：
+```bash
+# 下载文件
+curl -L -o /tmp/sqlite.zip "https://www.sqlite.org/2025/sqlite-amalgamation-3490200.zip"
+
+# 获取 hash
+zig fetch /tmp/sqlite.zip
+
+# 然后尝试构建
+cd /data/work/zig/z-hermes
+zig build
+```
+或者是给zig配置代理：
+···
+
+zig build --http-proxy http://proxy-server:port
+
+···

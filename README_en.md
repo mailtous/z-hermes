@@ -83,6 +83,11 @@ z-hermes/
 - Supports creating, viewing, partial modification (patch), full rewrite (edit), and deletion
 - Skill content automatically injected into system prompt
 
+#### Installing Skills
+
+Simply copy the skill directory to the `data/skills/` directory.
+After copying, restart the program to automatically load the skill.
+
 ### 8. Context Compression
 - Automatically triggers compression when conversation history exceeds limits
 - Preserves head critical messages + LLM-generated intermediate summary + tail recent messages
@@ -223,4 +228,21 @@ User Input → Agent.run()
               ├── Parse response (ToolCallingStrategy.parseResponse)
               ├── If tool call → Execute tool → Add result to history → Continue loop
               └── Return final text response
+```
+
+# When zig build cannot download dependencies:
+```bash
+# Download file
+curl -L -o /tmp/sqlite.zip "https://www.sqlite.org/2025/sqlite-amalgamation-3490200.zip"
+
+# Get hash
+zig fetch /tmp/sqlite.zip
+
+# Then try building
+cd /data/work/zig/z-hermes
+zig build
+```
+Or configure proxy for zig:
+```
+zig build --http-proxy http://proxy-server:port
 ```

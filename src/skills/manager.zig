@@ -23,6 +23,43 @@ pub const SkillManager = struct {
         };
     }
 
+    fn copyDirRecursive(self: *SkillManager, src_dir: []const u8, dest_dir: []const u8) !usize {
+        var file_count: usize = 0;
+        const cwd = std.Io.Dir.cwd();
+
+        var src = cwd.openDir(self.io, src_dir, .{ .iterate = true }) catch return 0;
+        defer src.close(self.io);
+
+        var walker = src.walk(self.allocator) catch return 0;
+        defer walker.deinit();
+
+        while (try walker.next(self.io)) |entry| {
+            if (entry.kind == .file) {
+                const src_path = try std.fs.path.join(self.allocator, &.{ src_dir, entry.path });
+                defer self.allocator.free(src_path);
+
+                const dest_path = try std.fs.path.join(self.allocator, &.{ dest_dir, entry.path });
+                defer self.allocator.free(dest_path);
+
+                const content = cwd.readFileAlloc(self.io, src_path, self.allocator, std.Io.Limit.limited(10 * 1024 * 1024)) catch continue;
+                defer self.allocator.free(content);
+
+                const parent = std.fs.path.dirname(dest_path);
+                if (parent) |p| {
+                    cwd.createDirPath(self.io, p) catch {};
+                }
+
+                const file = try cwd.createFile(self.io, dest_path, .{});
+                defer file.close(self.io);
+                try file.writeStreamingAll(self.io, content);
+
+                file_count += 1;
+            }
+        }
+
+        return file_count;
+    }
+
     pub fn skillsList(self: *SkillManager, args: std.json.Value) ![]const u8 {
         const all_skills = self.skill_loader.loadAll() catch return "Error: failed to load skills";
         defer {
@@ -230,6 +267,42 @@ pub const SkillManager = struct {
             return try std.fmt.allocPrint(self.allocator, "Removed {s} from skill '{s}'", .{ file_path, name });
         }
 
-        return try std.fmt.allocPrint(self.allocator, "Error: unknown action '{s}'. Use: create, patch, edit, delete, write_file, remove_file", .{action});
+        if (std.mem.eql(u8, action, "install")) {
+            const source_dir = if (args.object.get("source_dir")) |sd| sd.string else return "Error: source_dir is required for install";
+
+            const src_base = "src/skills";
+            var src_path_buf: std.ArrayList(u8) = .empty;
+            try src_path_buf.print(self.allocator, "{s}/{s}", .{ src_base, source_dir });
+            defer src_path_buf.deinit(self.allocator);
+
+            const src_exists = cwd.openDir(self.io, src_path_buf.items, .{}) catch null;
+            if (src_exists == null) {
+                return try std.fmt.allocPrint(self.allocator, "Error: source directory '{s}/{s}' not found", .{ src_base, source_dir });
+            } else {
+                src_exists.?.close(self.io);
+            }
+
+            var dest_path_buf: std.ArrayList(u8) = .empty;
+            try dest_path_buf.print(self.allocator, "{s}/{s}", .{ self.skills_dir, name });
+            defer dest_path_buf.deinit(self.allocator);
+
+            const existing = cwd.openDir(self.io, dest_path_buf.items, .{}) catch null;
+            if (existing != null) {
+                existing.?.close(self.io);
+                return try std.fmt.allocPrint(self.allocator, "Error: skill '{s}' already installed. Use 'patch' or 'edit' to modify.", .{name});
+            }
+
+            cwd.createDirPath(self.io, dest_path_buf.items) catch {};
+
+            const copied = try self.copyDirRecursive(src_path_buf.items, dest_path_buf.items);
+            if (copied > 0) {
+                return try std.fmt.allocPrint(self.allocator, "Skill '{s}' installed from '{s}' ({d} files copied)", .{ name, source_dir, copied });
+            } else {
+                cwd.deleteTree(self.io, dest_path_buf.items) catch {};
+                return try std.fmt.allocPrint(self.allocator, "Error: no files found in source directory '{s}'", .{source_dir});
+            }
+        }
+
+        return try std.fmt.allocPrint(self.allocator, "Error: unknown action '{s}'. Use: create, patch, edit, delete, write_file, remove_file, install", .{action});
     }
 };

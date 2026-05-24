@@ -63,6 +63,11 @@ pub const PromptBuilder = struct {
     const SKILLS_GUIDANCE =
         \\## Skill Instructions
         \\After difficult or iterative tasks, offer to save the approach as a skill. Confirm with the user before creating or deleting. Use skill_manage with action="create" for new skills, action="patch" (old_string/new_string) to fix existing ones. Skip for simple one-offs. Use skills_list to see what skills exist, and skill_view to load their full content when relevant.
+        \\
+        \\## Built-in Skills (available in src/skills/)
+        \\These skills are pre-installed in the source code but not yet loaded. Use skill_manage with action="install" and source_dir to install them:
+        \\- himalaya: Email management via CLI (source_dir="email/hamalaya")
+        \\To install: skill_manage(action="install", name="himalaya", source_dir="email/hamalaya")
     ;
 
     // 工具使用指导：鼓励AI主动行动而非仅描述
